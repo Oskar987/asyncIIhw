@@ -29,8 +29,8 @@ public class Program
 		app.UseHttpsRedirection();
 
 		app.UseAuthorization();
-
-		app.MapGet("/withawait", async () =>
+		//OPTION 1: Using async/await (not parallel)
+		app.MapGet("/persons/withawait", async () =>
 			{
 				PersonReader reader = new ();
 				try
@@ -51,17 +51,17 @@ public class Program
 					return Results.Problem("Error");
 				}
 			})
-			.WithName("withawait")
+			.WithName("Get persons withawait")
 			.WithOpenApi();
 		
 		// OPTION 2: Task w/ Continuation (runs parallel)
-		app.MapGet("/WithTask", () => Results.Ok())
-			.WithName("WithTask")
+		app.MapGet("/persons/withtask", () => Results.Ok())
+			.WithName("Get persons WithTask")
 			.WithOpenApi();
 		
 		// OPTION 3: Parallel.ForEachAsync (runs parallel)
-		app.MapGet("/WithForEach", () => Results.Ok())
-			.WithName("WithForEach")
+		app.MapGet("/persons/withforeach", () => Results.Ok())
+			.WithName("Get persons WithForEach")
 			.WithOpenApi();
 
 		app.Run();
